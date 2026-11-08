@@ -1,11 +1,13 @@
 import { MetadataRoute } from "next";
 
+export const dynamic = "force-static";
+
 export default function robots(): MetadataRoute.Robots {
   return {
     rules: {
       userAgent: "*",
       disallow: "/",
     },
-    sitemap: "http://localhost:3000/sitemap.xml",
+    sitemap: "https://mafizulkhan.github.io/natun-bazar-jatiya-vidyalaya-webnsite/sitemap.xml",
   };
 }

@@ -14,28 +14,17 @@ export default function GalleryPage() {
   const [activeCategory, setActiveCategory] = useState<Category>("All");
 
   useEffect(() => {
-    // 1. Fetch latest gallery photos from server
-    fetch("/api/gallery", { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.images) && data.images.length > 0) {
-          setImages(data.images);
-          return;
+    try {
+      const stored = localStorage.getItem("nbjv_admin_gallery_images");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setImages(parsed);
         }
-        throw new Error("Invalid API response");
-      })
-      .catch(() => {
-        // Fallback to localStorage
-        try {
-          const stored = localStorage.getItem("nbjv_admin_gallery_images");
-          if (stored) {
-            const parsed = JSON.parse(stored);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              setImages(parsed);
-            }
-          }
-        } catch (e) {}
-      });
+      }
+    } catch (e) {
+      console.warn("Could not load gallery from localStorage", e);
+    }
   }, []);
 
   const filtered: GalleryImage[] =

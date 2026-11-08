@@ -1,68 +1,72 @@
 import { MetadataRoute } from "next";
 
-const BASE_URL = "http://localhost:3000";
+export const dynamic = "force-static";
+
+const BASE_URL = "https://mafizulkhan.github.io/natun-bazar-jatiya-vidyalaya-webnsite";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const staticDate = new Date("2026-11-08T00:00:00.000Z");
+
   return [
     {
       url: `${BASE_URL}/`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "weekly",
       priority: 1.0,
     },
     {
       url: `${BASE_URL}/about`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/academics`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "monthly",
       priority: 0.8,
     },
     {
       url: `${BASE_URL}/admissions`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "monthly",
       priority: 0.9,
     },
     {
       url: `${BASE_URL}/notices`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "weekly",
       priority: 0.7,
     },
     {
       url: `${BASE_URL}/gallery`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/staff`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "monthly",
       priority: 0.6,
     },
     {
       url: `${BASE_URL}/contact`,
-      lastModified: new Date(),
-      changeFrequency: "yearly",
-      priority: 0.7,
+      lastModified: staticDate,
+      changeFrequency: "monthly",
+      priority: 0.6,
     },
     {
       url: `${BASE_URL}/privacy`,
-      lastModified: new Date(),
+      lastModified: staticDate,
       changeFrequency: "yearly",
       priority: 0.3,
     },
     {
       url: `${BASE_URL}/admin`,
-      lastModified: new Date(),
-      changeFrequency: "never",
-      priority: 0.1,
+      lastModified: staticDate,
+      changeFrequency: "weekly",
+      priority: 0.5,
     },
   ];
 }

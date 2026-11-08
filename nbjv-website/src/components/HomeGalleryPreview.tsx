@@ -9,26 +9,17 @@ export default function HomeGalleryPreview() {
   const [images, setImages] = useState<GalleryImage[]>(GALLERY_IMAGES.slice(0, 6));
 
   useEffect(() => {
-    fetch("/api/gallery", { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.images) && data.images.length > 0) {
-          setImages(data.images.slice(0, 6));
-          return;
+    try {
+      const stored = localStorage.getItem("nbjv_admin_gallery_images");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          setImages(parsed.slice(0, 6));
         }
-        throw new Error("No API gallery");
-      })
-      .catch(() => {
-        try {
-          const stored = localStorage.getItem("nbjv_admin_gallery_images");
-          if (stored) {
-            const parsed = JSON.parse(stored);
-            if (Array.isArray(parsed) && parsed.length > 0) {
-              setImages(parsed.slice(0, 6));
-            }
-          }
-        } catch {}
-      });
+      }
+    } catch (e) {
+      console.warn("Could not load gallery from localStorage", e);
+    }
   }, []);
 
   return (

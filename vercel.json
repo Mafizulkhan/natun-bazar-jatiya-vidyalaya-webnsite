@@ -4,3 +4,4 @@
   "buildCommand": "cd nbjv-website && npm install && npm run build",
   "outputDirectory": "nbjv-website/.next"
 }
+

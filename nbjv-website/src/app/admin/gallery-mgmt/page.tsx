@@ -55,25 +55,8 @@ export default function AdminGalleryMgmtPage() {
   // Lightbox preview
   const [lightboxImage, setLightboxImage] = useState<GalleryImage | null>(null);
 
-  // Load latest photos from server (with localStorage fallback)
-  const fetchGalleryData = async () => {
-    try {
-      const res = await fetch("/api/gallery", { cache: "no-store" });
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && Array.isArray(data.images) && data.images.length > 0) {
-          setImages(data.images);
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data.images));
-          } catch {}
-          return;
-        }
-      }
-    } catch (err) {
-      console.warn("Could not fetch /api/gallery, falling back to localStorage", err);
-    }
-
-    // Fallback: check localStorage
+  // Load photos from localStorage
+  useEffect(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
       if (stored) {
@@ -82,11 +65,7 @@ export default function AdminGalleryMgmtPage() {
           setImages(parsed);
         }
       }
-    } catch {}
-  };
-
-  useEffect(() => {
-    fetchGalleryData();
+    } catch (e) {}
   }, []);
 
   const showToast = (message: string, type: "success" | "info" | "error" = "success") => {
@@ -248,61 +227,26 @@ export default function AdminGalleryMgmtPage() {
     }
   };
 
-  // Confirm and upload all staged photos to the server
-  const handleConfirmUploadAll = async () => {
+  // Confirm and upload all staged photos
+  const handleConfirmUploadAll = () => {
     if (stagedImages.length === 0) return;
-    setIsUploading(true);
 
+    const newItems: GalleryImage[] = stagedImages.map((s, idx) => ({
+      id: `custom-g${Date.now()}-${idx}`,
+      src: s.previewUrl,
+      fallbackSrc: s.previewUrl,
+      alt: s.caption || "School gallery photograph",
+      category: s.category,
+      caption: s.caption || "School campus photograph",
+    }));
+
+    const updated = [...newItems, ...images];
+    setImages(updated);
+    setStagedImages([]);
     try {
-      const formDataUpload = new FormData();
-      stagedImages.forEach((item) => {
-        if (item.file) {
-          formDataUpload.append("file", item.file);
-          formDataUpload.append("caption", item.caption);
-          formDataUpload.append("category", item.category);
-        }
-      });
-
-      const res = await fetch("/api/gallery/upload", {
-        method: "POST",
-        body: formDataUpload,
-      });
-
-      if (res.ok) {
-        const data = await res.json();
-        if (data.success && data.images) {
-          setImages(data.images);
-          setStagedImages([]);
-          try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(data.images));
-          } catch {}
-          showToast(`✅ Successfully uploaded ${data.newItems?.length || stagedImages.length} photo(s) to the school website!`);
-          setIsUploading(false);
-          return;
-        }
-      }
-      throw new Error("Server upload returned unsuccessful response");
-    } catch (err: any) {
-      console.warn("Server upload failed, applying local fallback:", err);
-      // Fallback: save to state
-      const fallbackItems: GalleryImage[] = stagedImages.map((s, idx) => ({
-        id: `local-g${Date.now()}-${idx}`,
-        src: s.previewUrl,
-        fallbackSrc: s.previewUrl,
-        alt: s.caption,
-        category: s.category,
-        caption: s.caption,
-      }));
-      const updated = [...fallbackItems, ...images];
-      setImages(updated);
-      setStagedImages([]);
-      try {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-      } catch {}
-      showToast(`⚠️ Photo saved locally in browser.`);
-    } finally {
-      setIsUploading(false);
-    }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
+    } catch {}
+    showToast(`✅ Successfully uploaded ${newItems.length} photo(s) to Gallery!`);
   };
 
   // Apply batch category to all staged items
@@ -331,62 +275,22 @@ export default function AdminGalleryMgmtPage() {
     );
   };
 
-  // Delete an existing photo (sync with server)
-  const handleDelete = async (id: string) => {
+  // Delete an existing photo
+  const handleDelete = (id: string) => {
     if (confirm("Are you sure you want to remove this photo from the school website?")) {
-      try {
-        const res = await fetch(`/api/gallery?id=${encodeURIComponent(id)}`, {
-          method: "DELETE",
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.images) {
-            setImages(data.images);
-            try {
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.images));
-            } catch {}
-            if (lightboxImage?.id === id) setLightboxImage(null);
-            showToast("Photo removed from website.");
-            return;
-          }
-        }
-      } catch (err) {
-        console.warn("Delete request failed on server, deleting locally", err);
-      }
-
-      // Local deletion fallback
       const updated = images.filter((img) => img.id !== id);
       setImages(updated);
       try {
         localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
       } catch {}
       if (lightboxImage?.id === id) setLightboxImage(null);
-      showToast("Photo removed from gallery view.");
+      showToast("Photo removed from gallery.");
     }
   };
 
   // Reset to initial demo photos
-  const handleResetToDefaults = async () => {
+  const handleResetToDefaults = () => {
     if (confirm("Reset gallery back to default initial photos? Custom uploaded photos will be cleared.")) {
-      try {
-        const res = await fetch("/api/gallery", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ action: "reset" }),
-        });
-        if (res.ok) {
-          const data = await res.json();
-          if (data.images) {
-            setImages(data.images);
-            try {
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.images));
-            } catch {}
-            showToast("Gallery reset to default photos.");
-            return;
-          }
-        }
-      } catch (err) {}
-
       setImages(GALLERY_IMAGES);
       try {
         localStorage.removeItem(STORAGE_KEY);
@@ -396,93 +300,36 @@ export default function AdminGalleryMgmtPage() {
   };
 
   // Submit modal single photo
-  const handleModalSubmit = async (e: React.FormEvent) => {
+  const handleModalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    setIsUploading(true);
 
-    try {
-      if (modalTab === "file") {
-        if (!modalFile && !modalFilePreview) {
-          showToast("Please drag & drop or select an image file first.", "error");
-          setIsUploading(false);
-          return;
-        }
-
-        if (modalFile) {
-          const fd = new FormData();
-          fd.append("file", modalFile);
-          fd.append("caption", formData.caption);
-          fd.append("category", formData.category);
-
-          const res = await fetch("/api/gallery/upload", {
-            method: "POST",
-            body: fd,
-          });
-
-          if (res.ok) {
-            const data = await res.json();
-            if (data.success && data.images) {
-              setImages(data.images);
-              try {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data.images));
-              } catch {}
-              setIsModalOpen(false);
-              setModalFile(null);
-              setModalFilePreview(null);
-              showToast("Photo uploaded and updated on website!");
-              setIsUploading(false);
-              return;
-            }
-          }
-        }
-      } else {
-        // URL Mode
-        const res = await fetch("/api/gallery", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            src: formData.src,
-            caption: formData.caption,
-            category: formData.category,
-            alt: formData.alt,
-          }),
-        });
-
-        if (res.ok) {
-          const data = await res.json();
-          if (data.success && data.images) {
-            setImages(data.images);
-            try {
-              localStorage.setItem(STORAGE_KEY, JSON.stringify(data.images));
-            } catch {}
-            setIsModalOpen(false);
-            showToast("Photo URL added and updated on website!");
-            setIsUploading(false);
-            return;
-          }
-        }
+    let imageSrc = formData.src;
+    if (modalTab === "file") {
+      if (!modalFilePreview) {
+        showToast("Please drag & drop or select an image file first.", "error");
+        return;
       }
-    } catch (err) {
-      console.warn("Modal upload server error, falling back locally", err);
+      imageSrc = modalFilePreview;
     }
 
-    // Fallback single item
     const newItem: GalleryImage = {
       id: `custom-g${Date.now()}`,
-      src: modalFilePreview || formData.src,
-      fallbackSrc: modalFilePreview || formData.src,
-      alt: formData.caption,
+      src: imageSrc,
+      fallbackSrc: imageSrc,
+      alt: formData.caption || formData.alt,
       category: formData.category,
-      caption: formData.caption,
+      caption: formData.caption || "Campus photograph",
     };
+
     const updated = [newItem, ...images];
     setImages(updated);
     try {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
     } catch {}
     setIsModalOpen(false);
-    setIsUploading(false);
-    showToast("Photo updated on website!");
+    setModalFile(null);
+    setModalFilePreview(null);
+    showToast("Photo added to gallery!");
   };
 
   // Filter images

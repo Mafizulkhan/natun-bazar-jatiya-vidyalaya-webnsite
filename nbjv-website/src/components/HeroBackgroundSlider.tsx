@@ -30,19 +30,20 @@ export default function HeroBackgroundSlider() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   useEffect(() => {
-    fetch("/api/gallery", { cache: "no-store" })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.success && Array.isArray(data.images) && data.images.length > 0) {
-          const custom = data.images
-            .filter((img: any) => img.src && (img.src.startsWith("/uploads/") || img.src.startsWith("http")))
+    try {
+      const stored = localStorage.getItem("nbjv_admin_gallery_images");
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (Array.isArray(parsed) && parsed.length > 0) {
+          const custom = parsed
+            .filter((img: any) => img.src)
             .map((img: any) => ({ url: img.src, alt: img.caption || img.alt || "School campus" }));
           if (custom.length > 0) {
             setSlides([...custom.slice(0, 4), ...HERO_SLIDES]);
           }
         }
-      })
-      .catch(() => {});
+      }
+    } catch (e) {}
   }, []);
 
   useEffect(() => {
