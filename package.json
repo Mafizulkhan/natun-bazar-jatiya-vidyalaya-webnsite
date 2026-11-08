@@ -1,0 +1,13 @@
+{
+  "name": "natun-bazar-jatiya-vidyalaya-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Natun Bazar Jatiya Vidyalaya Website Demonstration by Handshake Co.",
+  "scripts": {
+    "dev": "npm --prefix nbjv-website run dev",
+    "build": "npm --prefix nbjv-website run build",
+    "start": "npm --prefix nbjv-website run start",
+    "lint": "npm --prefix nbjv-website run lint"
+  }
+}
+

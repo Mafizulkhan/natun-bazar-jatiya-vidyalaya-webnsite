@@ -1,0 +1,122 @@
+[
+  {
+    "id": "upload-g1794164302983-0",
+    "src": "/uploads/photo-1794164302982-0-631761534_877632658506300_7811687775674753327_n.jpg",
+    "fallbackSrc": "/uploads/photo-1794164302982-0-631761534_877632658506300_7811687775674753327_n.jpg",
+    "alt": "631761534 877632658506300 7811687775674753327 n",
+    "category": "Campus",
+    "caption": "631761534 877632658506300 7811687775674753327 n"
+  },
+  {
+    "id": "upload-g1794164291862-0",
+    "src": "/uploads/photo-1794164291861-0-613589318_852792857656947_5802999967058126910_n.jpg",
+    "fallbackSrc": "/uploads/photo-1794164291861-0-613589318_852792857656947_5802999967058126910_n.jpg",
+    "alt": "613589318 852792857656947 5802999967058126910 n",
+    "category": "Campus",
+    "caption": "613589318 852792857656947 5802999967058126910 n"
+  },
+  {
+    "id": "upload-g1794164251773-0",
+    "src": "/uploads/photo-1794164251771-0-621807035_864852279784338_226518481053161553_n.jpg",
+    "fallbackSrc": "/uploads/photo-1794164251771-0-621807035_864852279784338_226518481053161553_n.jpg",
+    "alt": "621807035 864852279784338 226518481053161553 n",
+    "category": "Campus",
+    "caption": "621807035 864852279784338 226518481053161553 n"
+  },
+  {
+    "id": "upload-g1794164251780-1",
+    "src": "/uploads/photo-1794164251775-1-616809049_859055173697382_2698029733448176176_n.jpg",
+    "fallbackSrc": "/uploads/photo-1794164251775-1-616809049_859055173697382_2698029733448176176_n.jpg",
+    "alt": "616809049 859055173697382 2698029733448176176 n",
+    "category": "Campus",
+    "caption": "616809049 859055173697382 2698029733448176176 n"
+  },
+  {
+    "id": "upload-g1794164251789-2",
+    "src": "/uploads/photo-1794164251786-2-615432745_854549734147926_3830102887311144845_n.jpg",
+    "fallbackSrc": "/uploads/photo-1794164251786-2-615432745_854549734147926_3830102887311144845_n.jpg",
+    "alt": "615432745 854549734147926 3830102887311144845 n",
+    "category": "Campus",
+    "caption": "615432745 854549734147926 3830102887311144845 n"
+  },
+  {
+    "id": "g1",
+    "src": "/images/school/photo-1.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=75",
+    "alt": "School building exterior",
+    "category": "Campus",
+    "caption": "School campus & entrance"
+  },
+  {
+    "id": "g2",
+    "src": "/images/school/photo-2.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1562774053-701939374585?w=600&q=75",
+    "alt": "School corridor",
+    "category": "Campus",
+    "caption": "School corridors & premises"
+  },
+  {
+    "id": "g3",
+    "src": "/images/school/photo-3.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1588072432836-e10032774350?w=600&q=75",
+    "alt": "Classroom learning",
+    "category": "Classroom",
+    "caption": "Primary classroom session"
+  },
+  {
+    "id": "g4",
+    "src": "/images/school/photo-4.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600&q=75",
+    "alt": "Students reading",
+    "category": "Classroom",
+    "caption": "Students during study session"
+  },
+  {
+    "id": "g5",
+    "src": "/images/school/photo-5.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1546410531-bb4caa6b424d?w=600&q=75",
+    "alt": "Drawing activity",
+    "category": "Activities",
+    "caption": "Art and drawing activity"
+  },
+  {
+    "id": "g6",
+    "src": "/images/school/photo-6.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1529390079861-591de354faf5?w=600&q=75",
+    "alt": "Sports day running",
+    "category": "Activities",
+    "caption": "Sports & outdoor activities"
+  },
+  {
+    "id": "g7",
+    "src": "/images/school/photo-7.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1567168544813-cc03465b4fa8?w=600&q=75",
+    "alt": "School event assembly",
+    "category": "Events",
+    "caption": "Morning school assembly"
+  },
+  {
+    "id": "g8",
+    "src": "/images/school/photo-8.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=600&q=75",
+    "alt": "Annual function",
+    "category": "Events",
+    "caption": "Annual day event"
+  },
+  {
+    "id": "g9",
+    "src": "/images/school/photo-9.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1513258496099-48168024aec0?w=600&q=75",
+    "alt": "Independence Day celebration",
+    "category": "Celebrations",
+    "caption": "National festival celebration"
+  },
+  {
+    "id": "g10",
+    "src": "/images/school/photo-10.jpg",
+    "fallbackSrc": "https://images.unsplash.com/photo-1580582932707-520aed937b7b?w=600&q=75",
+    "alt": "School gate",
+    "category": "Campus",
+    "caption": "School entrance view"
+  }
+]
